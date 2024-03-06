@@ -1,0 +1,40 @@
+name: SonarQube Continuous Integratio Build
+
+on:
+  push:
+    branches:
+      master
+  workflow_dispatch:
+
+jobs:
+  build_and_test :
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4.1.1
+
+      - name: Build dotnet code
+        working-directory: ./dotnet
+        run: dotnet build --configuration Release
+
+      - name: Test dotnet code
+        working-directory: ./dotnet
+        run: dotnet test --configuration Release
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: dotnet publish
+        working-directory: ./dotnet
+        run: |
+          dotnet publish -c Release -o ./myapp
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with: 
+          name: my-artifacts
+          path: ./dotnet/myapp
+        
