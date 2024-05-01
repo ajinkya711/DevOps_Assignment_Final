@@ -1,12 +1,17 @@
-name: Continuous Deployment
+name: .Net application
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
