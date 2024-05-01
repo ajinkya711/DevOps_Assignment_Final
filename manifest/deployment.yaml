@@ -21,18 +21,3 @@ spec:
         image: ajinkya1107/sampleweb
         ports:
         - containerPort: 8000
----
-# Nodeport service to expose the application
-apiVersion: v1
-kind: Service
-metadata:
-  name: sampleweb-service
-  namespace: default
-spec:
-  selector:
-    app: sampleweb
-  ports:
-    - protocol: TCP
-      port: 8000
-      targetPort: 8000 
-  type: NodePort
