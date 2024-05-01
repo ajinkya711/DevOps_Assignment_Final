@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samplewebfinal-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sampleweb
+  template:
+    metadata:
+      labels:
+        app: sampleweb
+    spec:
+      containers:
+        - name: sampleweb-container
+          image: sampleweb
+          ports:
+            - containerPort: 80
