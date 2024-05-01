@@ -23,11 +23,6 @@ jobs:
         docker tag sampleweb:latest ajinkya1107/sampleweb:latest
         docker push ajinkya1107/sampleweb:latest  
 
-    - name: Set up Minikube
-      uses: azure/setup-minikube@v1
-      with:
-        minikube-version: latest
-
     - name: Start Minikube
       run: minikube start
 
