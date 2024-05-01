@@ -1,0 +1,39 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    
+    - name: Build Docker image
+      run: docker build -t sampleweb .
+
+    - name: Push Docker image
+      run: |
+        docker login -u "ajinkya1107" -p "Ajinkya@#12" docker.io
+        docker tag sampleweb:latest ajinkya1107/sampleweb:latest
+        docker push ajinkya1107/sampleweb:latest  
+
+    - name: Set up Minikube
+      uses: azure/setup-minikube@v1
+      with:
+        minikube-version: latest
+
+    - name: Start Minikube
+      run: minikube start
+
+    - name: Deploy to Minikube
+      run: |
+        kubectl create deployment samplewebappCD-depl --image=ajinkya1107/sampleweb:latest
+
+    - name: Verify deployment
+      run: kubectl get pods
