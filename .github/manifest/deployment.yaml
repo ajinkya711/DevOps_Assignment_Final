@@ -1,0 +1,38 @@
+# File: deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samplewebCD-deployment
+  labels:
+    app: sampleweb
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sampleweb
+  template:
+    metadata:
+      labels:
+        app: sampleweb
+    spec:
+      containers:
+      - name: samplewebcontainer
+        image: ajinkya1107/sampleweb
+        ports:
+        - containerPort: 8000
+---
+# Nodeport service to expose the application
+apiVersion: v1
+kind: Service
+metadata:
+  name: sampleweb-service
+  namespace: default
+spec:
+  selector:
+    app: sampleweb
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000 
+  type: NodePort
