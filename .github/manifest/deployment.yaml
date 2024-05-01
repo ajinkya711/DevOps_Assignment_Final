@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: samplewebCD-deployment
+  name: samplewebcd-deployment
   labels:
     app: sampleweb
   namespace: default
