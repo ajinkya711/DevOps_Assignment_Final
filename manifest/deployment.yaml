@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: samplewebcd-deployment
+  name: samplewebcdfinal-deployment
   labels:
     app: sampleweb
   namespace: default
@@ -22,54 +22,4 @@ spec:
         ports:
         - containerPort: 8000
        
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: samplewebcdbluegreen-deployment
-  labels:
-    app: sampleweb
-  namespace: default
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: sampleweb
-  template:
-    metadata:
-      labels:
-        app: sampleweb
-    spec:
-      containers:
-      - name: samplewebbluegreencontainer
-        image: ajinkya1107/samplewebbluegreen
-        ports:
-        - containerPort: 8000
 
----
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
-metadata:
-  name: samplewebbluegreen-rollout
-  namespace: default
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: sampleweb
-  strategy:
-    blueGreen:
-      activeService: samplewebcd-deployment
-      previewService: samplewebcdbluegreen-deployment
-      autoPromotionEnabled: true
-  template:
-    metadata:
-      labels:
-        app: sampleweb
-    spec:
-      containers:
-      - name: sampleweb
-        image: ajinkya1107/sampleweb
-        ports:
-        - containerPort: 80
----   
